@@ -33,3 +33,26 @@ def main():
     data = importData()
     modelSetup(data)
 main()
+
+def userInputs():
+    user = {}
+    age = int(input('What is your age?'))
+    user['Age'] = age
+
+    height = int(input('What is your height in cm?'))
+    user['Height (cm)'] = height
+
+    weight = int(input('What is your weight in kg?'))
+    user['Weight (kg)'] = weight
+
+    heart_rate = int(input('What is your heart rate in BPM?'))
+    user['Heart Rate (bpm)'] = heart_rate
+
+    steps = int(input('How many steps do you take per day on average?'))
+    user['Steps Taken'] = steps
+
+    distance = int(input('How much do you walk per day in km?'))
+    user['Distance (km)'] = distance
+
+    calorie = int(input('What is your daily calorie intake on average?'))
+    user['Daily Calorie Intake'] = calorie
