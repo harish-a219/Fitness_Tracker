@@ -13,7 +13,7 @@ def importData():
     return df
 
 def modelSetup(df):
-    features = [ 'Age', 'Height (cm)', 'Weight (kg)','Heart Rate (bpm)', 'Steps Taken', 'Distance (km)','Daily Calories Intake']
+    features = ['Age', 'Height (cm)', 'Weight (kg)','Heart Rate (bpm)', 'Steps Taken', 'Distance (km)','Daily Calories Intake']
     target = 'Calories Burned'
 
     normalized_data = normalize(df[features])
@@ -22,17 +22,19 @@ def modelSetup(df):
     y = df[target]
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=30, test_size = 0.2)
     model = LogisticRegression()
-    model.fit(X_train, y_train)
+    model.fit(X_train.values, y_train)
 
     y_predict = model.predict(X_test)
     
     print(y_predict)
-    return model
+    return model, features
 
 def main():
     data = importData()
-    modelSetup(data)
-main()
+    data1, data2 = modelSetup(data)
+    user_inputs = userInputs()
+    print(predictions(user_inputs, data2, data1))
+
 
 def userInputs():
     user = {}
@@ -55,4 +57,22 @@ def userInputs():
     user['Distance (km)'] = distance
 
     calorie = int(input('What is your daily calorie intake on average?'))
-    user['Daily Calorie Intake'] = calorie
+    user['Daily Calories Intake'] = calorie
+
+    return user
+
+
+def predictions(user_inputs, features, model):
+    num_values = []
+    for i in features:
+        num_values.append(user_inputs[i])
+    
+    num_values = normalize([num_values])[0]
+
+    
+    final = num_values.reshape(1,-1)   #Predict function only takes 2-D arrays, so final.reshape makes the list go from 1-D to 2-D
+    prediction = model.predict(final)[0]
+    probability = model.predict_proba(final)
+    return 'Probability:'+ str(round(probability[0][1]*100,2)) + '% chance'
+
+main()
