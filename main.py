@@ -3,7 +3,6 @@ import sklearn as sk
 import numpy as np
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
-from sklearn.linear_model import LogisticRegression
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import normalize
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
@@ -21,7 +20,7 @@ def modelSetup(df):
     X = df_normalized
     y = df[target]
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=30, test_size = 0.2)
-    model = LogisticRegression()
+    model = LinearRegression()
     model.fit(X_train.values, y_train)
 
     y_predict = model.predict(X_test)
@@ -72,7 +71,6 @@ def predictions(user_inputs, features, model):
     
     final = num_values.reshape(1,-1)   #Predict function only takes 2-D arrays, so final.reshape makes the list go from 1-D to 2-D
     prediction = model.predict(final)[0]
-    probability = model.predict_proba(final)
-    return 'Probability:'+ str(round(probability[0][1]*100,2)) + '% chance'
+    return 'On average, you will burn' + ' ' + str(prediction) + 'Calories Per Day'
 
 main()
